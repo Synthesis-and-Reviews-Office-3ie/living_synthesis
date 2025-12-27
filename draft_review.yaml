@@ -1,0 +1,294 @@
+- id: https://openalex.org/W7104365500
+  title: Protocol for Prospective Evaluation of Screening Algorithms integrated in
+    NeutrinoReview
+  source: openalex
+  doi: https://doi.org/10.5281/zenodo.17513215
+  oa_status: {}
+  include: true
+  newsletter_content:
+    headline: Evaluation of LLM-Based Screening in NeutrinoReview
+    summary: This paper presents a protocol for the prospective evaluation of LLM-based
+      screening algorithms integrated into the NeutrinoReview web application. The
+      study focuses on two algorithms, 5-Tier and CAL-X, which leverage LLMs to automate
+      the screening phase of systematic reviews, a traditionally labor-intensive process.
+      Preliminary results indicate significant workload reductions, with the LLaMA
+      3.1-8B model showing promising performance in prioritizing high-sensitivity
+      studies. The evaluation aims to assess the algorithms' effectiveness in real-world
+      settings, addressing potential data contamination and representativeness issues.
+    category: Methodology
+    models:
+    - LLaMA 3.1-8B
+    - GPT-4
+    relevance_score: 9
+- id: https://openalex.org/W7104389363
+  title: Protocol for Prospective Evaluation of Screening Algorithms integrated in
+    NeutrinoReview
+  source: openalex
+  doi: https://doi.org/10.5281/zenodo.17554629
+  oa_status: {}
+  include: true
+  newsletter_content:
+    headline: Prospective Evaluation of NeutrinoReview Screening Algorithms
+    summary: This paper presents a protocol for the prospective evaluation of LLM-based
+      screening algorithms integrated into NeutrinoReview, a web application designed
+      to automate the screening phase of systematic reviews. The study evaluates two
+      algorithms, 5-Tier and CAL-X, which leverage LLMs to prioritize high-sensitivity
+      pre-filtration of studies, aiming to reduce the workload while maintaining accuracy.
+      Preliminary results indicate workload reductions between 36% and 72%, with further
+      assessments pending human consensus. The LLM used in this study is LLaMA 3.1-8B,
+      hosted at CERN.
+    category: Methodology
+    models:
+    - LLaMA 3.1-8B
+    - GPT-4
+    relevance_score: 9
+- id: https://openalex.org/W7116955964
+  title: 'Antidepressant and Antipsychotic Drug Use and Cancer Risk: Protocol for
+    an Overview of Systematic Reviews and Meta-Analyses'
+  source: openalex
+  doi: https://doi.org/10.2196/78596
+  oa_status:
+    is_oa: true
+    oa_status: gold
+    url: https://doi.org/10.2196/78596
+    license: cc-by
+  include: true
+  newsletter_content:
+    headline: Protocol for Drug Use and Cancer Risk Review
+    summary: This paper outlines a protocol for an overview of systematic reviews
+      and meta-analyses assessing the relationship between antidepressant and antipsychotic
+      drug use and cancer risk. The study aims to evaluate whether these medications
+      influence cancer incidence and mortality. The protocol includes the use of GPT-4o,
+      a large language model, to assist in data extraction and screening tasks, potentially
+      accelerating the review process. The performance of GPT-4o will be validated
+      against human reviewers to ensure accuracy.
+    category: Methodology
+    models:
+    - GPT-4o
+    relevance_score: 8
+- id: https://openalex.org/W7116708426
+  title: Streamlining evidence based clinical recommendations with large language
+    models
+  source: openalex
+  doi: https://doi.org/10.1038/s41746-025-02273-y
+  oa_status:
+    is_oa: true
+    oa_status: gold
+    url: https://doi.org/10.1038/s41746-025-02273-y
+    license: cc-by-nc-nd
+  include: true
+  newsletter_content:
+    headline: LLM System for Automating Clinical Recommendations
+    summary: The study introduces 'Quicker', an LLM-powered system designed to automate
+      the synthesis and generation of clinical recommendations following standard
+      guideline development workflows. Quicker provides an end-to-end pipeline that
+      supports customized decision-making through integrated tools and interactive
+      interfaces. Evaluated using the Q2CRBench-3 benchmark, Quicker demonstrated
+      precise question decomposition, expert-aligned retrieval, and near-comprehensive
+      screening, improving the accuracy and comprehensiveness of extracted data compared
+      to clinician-written recommendations.
+    category: New Tool/App
+    models: []
+    relevance_score: 8
+- id: https://openalex.org/W7116769648
+  title: 'ResearchLens: An AI-Powered Desktop Environment for Qualitative Document
+    Analysis and Literature Synthesis'
+  source: openalex
+  doi: https://doi.org/10.5281/zenodo.18009145
+  oa_status: {}
+  include: true
+  newsletter_content:
+    headline: 'ResearchLens: AI Tool for Qualitative Document Analysis'
+    summary: ResearchLens is an open-source desktop application designed to assist
+      researchers in qualitative document analysis and literature review workflows.
+      It integrates Google Gemini generative AI models to enable semantic and contextual
+      analysis of local research documents. The tool supports user-guided summarization,
+      thematic extraction, and comparative analysis across multiple documents, facilitating
+      systematic coding and synthesis while reducing manual effort. By processing
+      documents locally, it ensures data sovereignty and maintains methodological
+      control and reproducibility.
+    category: New Tool/App
+    models:
+    - Google Gemini
+    relevance_score: 8
+- id: https://openalex.org/W7117084829
+  title: 'PsyNamic: A living systematic review of psychedelic therapy in psychiatric
+    disorders'
+  source: openalex
+  doi: null
+  oa_status: null
+  include: true
+  newsletter_content:
+    headline: NLP for Living Systematic Review in Psychedelic Therapy
+    summary: The paper presents a method to automate the synthesis and updating of
+      evidence in the field of psychedelic therapy for psychiatric disorders. By utilizing
+      natural language processing (NLP) techniques, including large language models,
+      the study aims to automate the classification of studies and extraction of relevant
+      data. This approach facilitates real-time evidence synthesis, ensuring that
+      the most current information is readily accessible to clinicians and researchers.
+      The outcomes will be available in an online repository, providing a comprehensive
+      resource for evidence-based information on psychedelic therapy.
+    category: Methodology
+    models: []
+    relevance_score: 8
+- id: https://openalex.org/W7116709610
+  title: 'ResearchLens: An AI-Powered Desktop Environment for Qualitative Document
+    Analysis and Literature Synthesis'
+  source: openalex
+  doi: https://doi.org/10.5281/zenodo.18008494
+  oa_status: {}
+  include: true
+  newsletter_content:
+    headline: 'ResearchLens: AI Tool for Qualitative Document Analysis'
+    summary: ResearchLens is an open-source desktop application designed to assist
+      researchers in qualitative document analysis and literature review workflows.
+      It integrates Google Gemini generative AI models to enable semantic and contextual
+      analysis of local research documents. The tool supports user-guided summarization,
+      thematic extraction, and comparative analysis across multiple documents, facilitating
+      systematic coding and synthesis while reducing manual effort. By processing
+      documents locally, it ensures data sovereignty and maintains methodological
+      control and reproducibility.
+    category: New Tool/App
+    models:
+    - Google Gemini
+    relevance_score: 8
+- id: https://openalex.org/W7116377788
+  title: 'ResearchLens: An AI-Powered Desktop Environment for Qualitative Document
+    Analysis and Literature Synthesis'
+  source: openalex
+  doi: https://doi.org/10.5281/zenodo.18002843
+  oa_status: {}
+  include: true
+  newsletter_content:
+    headline: 'ResearchLens: AI Tool for Qualitative Document Analysis'
+    summary: ResearchLens is an open-source desktop application designed to assist
+      researchers in qualitative document analysis and literature review workflows.
+      It integrates Google Gemini generative AI models to enable semantic and contextual
+      analysis of local research documents. The tool supports user-guided summarization,
+      thematic extraction, and comparative analysis across multiple documents, facilitating
+      systematic coding and synthesis while reducing manual effort. By processing
+      documents locally, it ensures data sovereignty and maintains methodological
+      control and reproducibility.
+    category: New Tool/App
+    models:
+    - Google Gemini
+    relevance_score: 8
+- id: https://openalex.org/W7116421991
+  title: 'ResearchLens: An AI-Powered Desktop Environment for Qualitative Document
+    Analysis and Literature Synthesis'
+  source: openalex
+  doi: https://doi.org/10.5281/zenodo.18002842
+  oa_status: {}
+  include: true
+  newsletter_content:
+    headline: 'ResearchLens: AI Tool for Qualitative Document Analysis'
+    summary: ResearchLens is an open-source desktop application designed to assist
+      researchers in qualitative document analysis and literature review workflows.
+      It integrates Google Gemini generative AI models to enable semantic and contextual
+      analysis of local research documents. The tool supports user-guided summarization,
+      thematic extraction, and comparative analysis across multiple documents, facilitating
+      systematic coding and synthesis while reducing manual effort. By processing
+      documents locally, it ensures data sovereignty and maintains methodological
+      control and reproducibility.
+    category: New Tool/App
+    models:
+    - Google Gemini
+    relevance_score: 8
+- id: https://openalex.org/W7116587418
+  title: Enhancing study selection in nutrition systematic reviews using large language
+    models
+  source: openalex
+  doi: null
+  oa_status: null
+  include: true
+  newsletter_content:
+    headline: LLMs for Study Selection in Nutrition Reviews
+    summary: This paper evaluates the integration and performance of commonly used
+      large language models (LLMs) in the study selection process of nutrition systematic
+      reviews. The study aims to assess how effectively LLMs can assist in screening
+      and selecting relevant studies from a large sample. The results provide insights
+      into the potential of LLMs to streamline the study selection phase, which is
+      a critical step in conducting systematic reviews.
+    category: Methodology
+    models: []
+    relevance_score: 8
+- id: 2512.20022v1
+  title: 'LLM-Assisted Abstract Screening with OLIVER: Evaluating Calibration and
+    Single-Model vs. Actor-Critic Configurations in Literature Reviews'
+  source: arxiv
+  doi: null
+  oa_status: null
+  include: true
+  newsletter_content:
+    headline: 'OLIVER: LLM-Based Abstract Screening Tool Evaluation'
+    summary: The paper introduces OLIVER, an open-source pipeline designed to enhance
+      abstract screening in systematic reviews using large language models (LLMs).
+      It evaluates the performance of various LLMs across two non-Cochrane reviews,
+      focusing on accuracy, AUC, and calibration metrics. The study highlights the
+      limitations of single-model configurations, particularly in calibration, and
+      demonstrates that an actor-critic framework can improve classification quality
+      and confidence reliability, making large-scale screening more efficient and
+      cost-effective.
+    category: New Tool/App
+    models: []
+    relevance_score: 9
+- id: https://zendy.io/zaia
+  title: AI-Powered Research Library - Zendy
+  source: google_web
+  doi: null
+  oa_status:
+    url: https://zendy.io/zaia
+    is_oa: true
+  include: true
+  newsletter_content:
+    headline: AI-Powered Research Library Tool Zendy
+    summary: The paper introduces Zendy, an AI-powered tool designed to streamline
+      the literature review process by significantly reducing the time required to
+      uncover relevant research. Zendy employs advanced AI analysis to assist researchers
+      in efficiently navigating large volumes of academic literature. The tool promises
+      to save up to 80% of the time typically spent on literature reviews, potentially
+      automating parts of the systematic review process such as reading and extracting
+      data from numerous papers.
+    category: New Tool/App
+    models: []
+    relevance_score: 8
+- id: https://www.pubmed.ai/
+  title: PubMed.ai
+  source: google_web
+  doi: null
+  oa_status:
+    url: https://www.pubmed.ai/
+    is_oa: true
+  include: true
+  newsletter_content:
+    headline: AI Tool for Summarizing and Extracting Research Content
+    summary: The paper introduces PubMed.ai, an AI-assisted tool designed to aid in
+      the literature review process by summarizing research content, extracting key
+      information, and highlighting important findings. This tool aims to streamline
+      the initial stages of evidence synthesis by automating the extraction of relevant
+      data from large volumes of academic literature. While the paper does not explicitly
+      focus on systematic reviews, the capabilities of PubMed.ai suggest potential
+      applications in automating parts of the evidence synthesis process.
+    category: New Tool/App
+    models: []
+    relevance_score: 8
+- id: https://x.com/knzw783/status/2001998408475967968
+  title: "#LLM #GenAI \u751F\u6210AI\u306E\u5FC3\u7406\u5B66\u7814\u7A76\u6D3B\u7528\
+    \u3001\u60AA\u3057\u304B\u3089\u305A"
+  source: twitter
+  doi: null
+  oa_status:
+    url: https://x.com/knzw783/status/2001998408475967968
+    is_oa: true
+  include: true
+  newsletter_content:
+    headline: Assessing LLM Accuracy in Data Extraction
+    summary: This paper evaluates the accuracy of generative artificial intelligence
+      in the task of data extraction for systematic reviews. By comparing AI-extracted
+      data with human-extracted data, the study aims to identify determinants that
+      affect the accuracy of AI in this context. The findings provide insights into
+      the potential and limitations of using LLMs for automating data extraction in
+      evidence synthesis.
+    category: Methodology
+    models: []
+    relevance_score: 8
