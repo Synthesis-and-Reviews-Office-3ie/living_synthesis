@@ -1,5 +1,17 @@
 # Production Deployment Plan
 
+> **Last Updated:** December 27, 2025
+
+## Progress Summary
+
+| Phase | Status | Progress |
+|-------|--------|----------|
+| Phase 1: MVP | 🟡 In Progress | 70% |
+| Phase 2: Beta | ⚪ Not Started | 0% |
+| Phase 3: Launch | ⚪ Not Started | 0% |
+
+---
+
 ## 1. Infrastructure Components
 
 ### Compute (Choose one)
@@ -218,52 +230,61 @@ CELERYBEAT_SCHEDULE = {
 ## 5. Deployment Steps
 
 ### Phase 1: MVP (Week 1-2)
-```bash
-# 1. Set up infrastructure
-- Railway project with PostgreSQL + Redis
-- Cloudflare R2 bucket
-- Resend account
 
-# 2. Refactor current code
-- Move from SQLite to PostgreSQL
-- Add user authentication (Auth.js or Supabase Auth)
-- Add Celery for background jobs
-- Create basic FastAPI endpoints
+#### 1. Set up infrastructure
+- [ ] Railway project with PostgreSQL + Redis
+- [ ] Cloudflare R2 bucket
+- [ ] Resend account
 
-# 3. Simple frontend
-- Landing page with waitlist signup
-- Basic dashboard to view newsletters
-```
+#### 2. Refactor current code
+- [x] Move from SQLite to PostgreSQL (supports both, SQLite for dev/tests)
+- [x] Add user authentication (JWT + bcrypt)
+- [x] Add Celery for background jobs (configured, tasks defined)
+- [x] Create basic FastAPI endpoints
+  - [x] Auth: signup, login, profile, password reset
+  - [x] Topics: CRUD with tier limits
+  - [x] Subscriptions: subscribe/unsubscribe
+  - [x] Health checks
+- [x] API rate limiting (slowapi + Redis)
+- [x] Email service integration (Resend)
+- [x] S3/R2 storage service
+- [x] Error monitoring (Sentry integration)
+- [x] Unit tests (24 passing)
+- [x] CI/CD pipeline (GitHub Actions)
+- [x] Docker support (Dockerfile + docker-compose)
+
+#### 3. Simple frontend
+- [ ] Landing page with waitlist signup
+- [ ] Basic dashboard to view newsletters
 
 ### Phase 2: Beta (Week 3-4)
-```bash
-# 4. Add multi-tenancy
-- Topic creation UI
-- Query builder interface
-- Review queue UI
 
-# 5. Add billing
-- Stripe integration
-- Subscription management
-- Usage limits
+#### 4. Add multi-tenancy
+- [ ] Topic creation UI
+- [ ] Query builder interface
+- [ ] Review queue UI
 
-# 6. Monitoring
-- Sentry for errors
-- PostHog for analytics
-```
+#### 5. Add billing
+- [x] Stripe integration (backend ready)
+- [ ] Checkout flow UI
+- [ ] Subscription management UI
+- [x] Usage limits (enforced in API)
+
+#### 6. Monitoring
+- [x] Sentry for errors (integrated)
+- [ ] PostHog for analytics
 
 ### Phase 3: Launch (Week 5-6)
-```bash
-# 7. Polish
-- Email templates
-- Onboarding flow
-- Documentation
 
-# 8. Marketing
-- Product Hunt launch
-- Twitter/LinkedIn posts
-- Academic forums (Cochrane, Campbell)
-```
+#### 7. Polish
+- [ ] Email templates (HTML)
+- [ ] Onboarding flow
+- [ ] Documentation
+
+#### 8. Marketing
+- [ ] Product Hunt launch
+- [ ] Twitter/LinkedIn posts
+- [ ] Academic forums (Cochrane, Campbell)
 
 ---
 
@@ -298,10 +319,10 @@ CELERYBEAT_SCHEDULE = {
 
 ## 7. Security Considerations
 
-- [ ] API rate limiting (per user)
+- [x] API rate limiting (per user) - slowapi with Redis
 - [ ] Input sanitization (query injection)
-- [ ] Secrets in environment variables (not in code!)
-- [ ] HTTPS everywhere
+- [x] Secrets in environment variables (not in code!) - .env + pydantic-settings
+- [ ] HTTPS everywhere (need deployment)
 - [ ] GDPR compliance (data export/deletion)
 - [ ] SOC 2 if targeting enterprise
 
