@@ -184,6 +184,66 @@ async def confirm_password_reset(
     return {"message": "Password reset successfully"}
 
 
+from pydantic import BaseModel
+from typing import Optional
+
+class OAuthSync(BaseModel):
+    """OAuth user sync request."""
+    provider: str
+    provider_id: str
+    email: str
+    name: Optional[str] = None
+    image: Optional[str] = None
+    access_token: Optional[str] = None
+
+
+@router.post("/oauth-sync")
+async def oauth_sync(
+    oauth_data: OAuthSync,
+    db: Session = Depends(get_db)
+):
+    """
+    Sync OAuth user with backend.
+    Creates user if doesn't exist, returns JWT token for API access.
+    """
+    # Look for existing user by email
+    user = db.query(User).filter(User.email == oauth_data.email).first()
+    
+    if not user:
+        # Create new user from OAuth
+        user = User(
+            email=oauth_data.email,
+            name=oauth_data.name,
+            hashed_password="",  # OAuth users don't have passwords
+            is_active=True,
+            oauth_provider=oauth_data.provider,
+            oauth_provider_id=oauth_data.provider_id,
+        )
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+    else:
+        # Update existing user with OAuth info if not set
+        if not user.oauth_provider:
+            user.oauth_provider = oauth_data.provider
+            user.oauth_provider_id = oauth_data.provider_id
+        if oauth_data.name and not user.name:
+            user.name = oauth_data.name
+        db.commit()
+    
+    # Create JWT token for API access
+    access_token = create_access_token(
+        data={"sub": str(user.id)},
+        expires_delta=timedelta(minutes=settings.access_token_expire_minutes)
+    )
+    
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "user_id": str(user.id)
+    }
+
+
 async def _send_welcome_email(email: str, name: str = None):
     """Background task to send welcome email."""
     try:

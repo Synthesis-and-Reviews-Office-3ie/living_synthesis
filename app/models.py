@@ -31,6 +31,10 @@ class User(Base):
     hashed_password = Column(String(255), nullable=False)
     name = Column(String(255))
     
+    # OAuth fields
+    oauth_provider = Column(String(50))  # google, microsoft-entra-id, github
+    oauth_provider_id = Column(String(255))  # provider's user ID
+    
     # Subscription
     tier = Column(SQLEnum(UserTier), default=UserTier.FREE)
     stripe_customer_id = Column(String(255))
