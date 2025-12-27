@@ -2,7 +2,7 @@
 Pydantic schemas for API request/response validation.
 """
 
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, ConfigDict
 from typing import Optional, List, Dict, Any
 from datetime import datetime
 from uuid import UUID
@@ -28,15 +28,14 @@ class Token(BaseModel):
 
 
 class UserResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    
     id: UUID
     email: str
     name: Optional[str]
     tier: str
     is_verified: bool
     created_at: datetime
-    
-    class Config:
-        from_attributes = True
 
 
 # ============== Topic Schemas ==============
@@ -72,6 +71,8 @@ class TopicUpdate(BaseModel):
 
 
 class TopicResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    
     id: UUID
     name: str
     description: Optional[str]
@@ -80,14 +81,13 @@ class TopicResponse(BaseModel):
     is_active: bool
     created_at: datetime
     last_run_at: Optional[datetime]
-    
-    class Config:
-        from_attributes = True
 
 
 # ============== Paper Schemas ==============
 
 class PaperResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    
     id: UUID
     doi: Optional[str]
     external_id: Optional[str]
@@ -97,12 +97,11 @@ class PaperResponse(BaseModel):
     publication_date: Optional[datetime]
     oa_url: Optional[str]
     is_oa: bool
-    
-    class Config:
-        from_attributes = True
 
 
 class TopicPaperResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    
     id: UUID
     paper: PaperResponse
     headline: Optional[str]
@@ -112,9 +111,6 @@ class TopicPaperResponse(BaseModel):
     relevance_score: Optional[int]
     include: bool
     reviewed_at: Optional[datetime]
-    
-    class Config:
-        from_attributes = True
 
 
 class ReviewDecision(BaseModel):
@@ -130,6 +126,8 @@ class BulkReviewRequest(BaseModel):
 # ============== Newsletter Schemas ==============
 
 class NewsletterResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    
     id: UUID
     topic_id: UUID
     html_url: Optional[str]
@@ -141,9 +139,6 @@ class NewsletterResponse(BaseModel):
     created_at: datetime
     period_start: Optional[datetime]
     period_end: Optional[datetime]
-    
-    class Config:
-        from_attributes = True
 
 
 # ============== Email Subscription Schemas ==============

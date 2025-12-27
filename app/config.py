@@ -3,12 +3,14 @@ Application configuration using Pydantic Settings.
 Loads from environment variables or .env file.
 """
 
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import Optional
 from functools import lru_cache
 
 
 class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    
     # App
     app_name: str = "Evidence Synthesis Newsletter"
     debug: bool = False
@@ -60,10 +62,6 @@ class Settings(BaseSettings):
     
     # Monitoring
     sentry_dsn: Optional[str] = None
-    
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
 
 
 @lru_cache()

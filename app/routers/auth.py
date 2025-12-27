@@ -4,7 +4,7 @@ Authentication routes: signup, login, logout, profile, password reset.
 
 from fastapi import APIRouter, Depends, HTTPException, status, Request, BackgroundTasks
 from sqlalchemy.orm import Session
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, timezone
 import secrets
 
 from app.database import get_db
@@ -133,7 +133,7 @@ async def request_password_reset(
     
     # Generate reset token
     token = secrets.token_urlsafe(32)
-    expires = datetime.utcnow() + timedelta(hours=1)
+    expires = datetime.now(timezone.utc) + timedelta(hours=1)
     
     _reset_tokens[token] = {
         "user_id": str(user.id),
