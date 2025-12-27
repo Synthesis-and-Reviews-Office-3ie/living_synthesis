@@ -72,12 +72,12 @@ export default function TopicsPage() {
             Manage your research topics and newsletters
           </p>
         </div>
-        <Link href="/topics/new">
-          <Button disabled={!canCreateTopic}>
+        <Button disabled={!canCreateTopic} asChild>
+          <Link href="/topics/new">
             <Plus className="mr-2 h-4 w-4" />
             New Topic
-          </Button>
-        </Link>
+          </Link>
+        </Button>
       </div>
 
       {!canCreateTopic && (
@@ -116,12 +116,12 @@ export default function TopicsPage() {
             <p className="text-muted-foreground text-center mb-4">
               Create your first topic to start receiving AI-curated newsletters
             </p>
-            <Link href="/topics/new">
-              <Button>
+            <Button asChild>
+              <Link href="/topics/new">
                 <Plus className="mr-2 h-4 w-4" />
                 Create Topic
-              </Button>
-            </Link>
+              </Link>
+            </Button>
           </CardContent>
         </Card>
       ) : (

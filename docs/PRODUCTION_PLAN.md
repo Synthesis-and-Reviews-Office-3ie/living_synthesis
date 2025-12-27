@@ -6,7 +6,7 @@
 
 | Phase | Status | Progress |
 |-------|--------|----------|
-| Phase 1: MVP | 🟡 In Progress | 70% |
+| Phase 1: MVP | 🟡 In Progress | 90% |
 | Phase 2: Beta | ⚪ Not Started | 0% |
 | Phase 3: Launch | ⚪ Not Started | 0% |
 
@@ -254,8 +254,13 @@ CELERYBEAT_SCHEDULE = {
 - [x] Docker support (Dockerfile + docker-compose)
 
 #### 3. Simple frontend
-- [ ] Landing page with waitlist signup
-- [ ] Basic dashboard to view newsletters
+- [x] Landing page with pricing
+- [x] Login / Signup / Password reset pages
+- [x] Dashboard with stats
+- [x] Topics list and create pages
+- [x] Settings page with profile & billing
+- [ ] Review queue UI (HITL)
+- [ ] Newsletter archive/preview
 
 ### Phase 2: Beta (Week 3-4)
 

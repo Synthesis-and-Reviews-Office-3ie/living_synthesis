@@ -175,11 +175,9 @@ export default function NewTopicPage() {
             )}
             Create Topic
           </Button>
-          <Link href="/topics">
-            <Button type="button" variant="outline">
-              Cancel
-            </Button>
-          </Link>
+          <Button type="button" variant="outline" asChild>
+            <Link href="/topics">Cancel</Link>
+          </Button>
         </div>
       </form>
     </div>

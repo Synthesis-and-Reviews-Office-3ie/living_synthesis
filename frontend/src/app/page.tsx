@@ -12,12 +12,12 @@ export default function HomePage() {
           <span className="font-bold text-xl">Living Synthesis</span>
         </div>
         <div className="flex items-center gap-4">
-          <Link href="/login">
-            <Button variant="ghost">Log in</Button>
-          </Link>
-          <Link href="/signup">
-            <Button>Get Started</Button>
-          </Link>
+          <Button variant="ghost" asChild>
+            <Link href="/login">Log in</Link>
+          </Button>
+          <Button asChild>
+            <Link href="/signup">Get Started</Link>
+          </Button>
         </div>
       </header>
 
@@ -33,17 +33,15 @@ export default function HomePage() {
           Never miss important papers in your field again.
         </p>
         <div className="flex gap-4 justify-center">
-          <Link href="/signup">
-            <Button size="lg" className="gap-2">
+          <Button size="lg" className="gap-2" asChild>
+            <Link href="/signup">
               <Sparkles className="h-5 w-5" />
               Start Free Trial
-            </Button>
-          </Link>
-          <Link href="#features">
-            <Button size="lg" variant="outline">
-              Learn More
-            </Button>
-          </Link>
+            </Link>
+          </Button>
+          <Button size="lg" variant="outline" asChild>
+            <Link href="#features">Learn More</Link>
+          </Button>
         </div>
       </section>
 
@@ -93,9 +91,9 @@ export default function HomePage() {
               <li>✓ Weekly digest</li>
               <li>✓ Last 4 newsletters</li>
             </ul>
-            <Link href="/signup">
-              <Button variant="outline" className="w-full">Get Started</Button>
-            </Link>
+            <Button variant="outline" className="w-full" asChild>
+              <Link href="/signup">Get Started</Link>
+            </Button>
           </div>
           
           {/* Pro */}
@@ -111,9 +109,9 @@ export default function HomePage() {
               <li>✓ Full archive</li>
               <li>✓ API access</li>
             </ul>
-            <Link href="/signup">
-              <Button className="w-full">Start Free Trial</Button>
-            </Link>
+            <Button className="w-full" asChild>
+              <Link href="/signup?plan=pro">Start Free Trial</Link>
+            </Button>
           </div>
           
           {/* Team */}
@@ -126,9 +124,9 @@ export default function HomePage() {
               <li>✓ Custom branding</li>
               <li>✓ Priority support</li>
             </ul>
-            <Link href="/signup">
-              <Button variant="outline" className="w-full">Contact Sales</Button>
-            </Link>
+            <Button variant="outline" className="w-full" asChild>
+              <Link href="/signup?plan=team">Contact Sales</Link>
+            </Button>
           </div>
         </div>
       </section>
