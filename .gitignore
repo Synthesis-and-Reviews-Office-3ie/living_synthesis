@@ -99,6 +99,7 @@ media/
 *.pem
 *.key
 secrets/
+config/settings.yaml
 
 # OS
 .DS_Store

@@ -1,0 +1,52 @@
+# Copy this file to config/settings.yaml and fill in the values.
+# config/settings.yaml is gitignored — never commit real keys.
+
+# API Keys and External Services
+api_keys:
+  openai: "YOUR_OPENROUTER_OR_OPENAI_KEY"
+  # openalex: "YOUR_OPENALEX_API_KEY" # Optional: Only needed for Premium. We use your email (below) for the free "Polite Pool".
+  pubmed: "YOUR_PUBMED_API_KEY"          # Optional
+  unpaywall: "you@example.com"           # Required for Unpaywall API & OpenAlex Polite Pool
+  google_search_api: "YOUR_GOOGLE_SEARCH_API_KEY"  # Optional for web search
+  google_search_cx: "YOUR_GOOGLE_SEARCH_CX"        # Optional for web search
+  github_token: "YOUR_GITHUB_TOKEN"                # Optional for GitHub search
+
+# Database Configuration
+database:
+  connection_string: "postgresql://user:password@localhost:5432/evidence_synthesis"
+
+# Search Queries
+queries:
+  scholarly:
+    - name: "LLM Evidence Synthesis"
+      query_string: '(("systematic review"[tiab] OR "evidence synthesis"[tiab] OR "meta-analysis"[tiab]) AND ("large language model"[tiab] OR LLM[tiab] OR GPT[tiab] OR transformer[tiab])) AND ("2024/01/01"[dp] : "3000"[dp])'
+      source: "pubmed"
+    - name: "LLM Systematic Review"
+      query_string: "large language model systematic review"
+      source: "crossref"
+
+  social:
+    - name: "Methods Blogs"
+      keywords: ["evidence synthesis", "systematic review", "PRISMA", "risk of bias", "LLM"]
+      sources: ["http://feeds.feedburner.com/CochraneLibrary", "https://www.nature.com/nature.rss"]
+
+# RSS Feeds for AI Newsletters
+rss_feeds:
+  - "https://newsletter.theresanaiforthat.com/feed"
+  - "https://www.bensbites.co/feed"
+  - "https://the-decoder.com/feed/"
+
+# Taxonomy for Classification
+taxonomy:
+  - "screening/triage"
+  - "PICO extraction"
+  - "risk of bias"
+  - "data extraction"
+  - "evidence-to-decision (GRADE)"
+  - "reporting/PRISMA"
+
+# LLM Settings
+llm:
+  model: "openai/gpt-4o"
+  temperature: 0.0
+  base_url: "https://openrouter.ai/api/v1"
