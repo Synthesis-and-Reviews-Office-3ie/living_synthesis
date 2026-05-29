@@ -114,11 +114,33 @@ class TestProfile:
         """Should update user name."""
         response = client.put(
             "/auth/me",
-            params={"name": "Updated Name"},
+            json={"name": "Updated Name"},
             headers=auth_headers
         )
         assert response.status_code == 200
         assert response.json()["name"] == "Updated Name"
+    
+    def test_update_llm_model(self, client: TestClient, auth_headers):
+        """Should update user's preferred LLM model."""
+        response = client.put(
+            "/auth/me",
+            json={"preferred_llm_model": "gpt-4o-mini"},
+            headers=auth_headers
+        )
+        assert response.status_code == 200
+        assert response.json()["preferred_llm_model"] == "gpt-4o-mini"
+    
+    def test_get_available_models(self, client: TestClient, auth_headers):
+        """Should return available models for user's tier."""
+        response = client.get(
+            "/auth/models",
+            headers=auth_headers
+        )
+        assert response.status_code == 200
+        data = response.json()
+        assert "models" in data
+        assert "current_model" in data
+        assert len(data["models"]) > 0
 
 
 class TestPasswordReset:

@@ -190,3 +190,109 @@ def generate_presigned_url(key: str, expires_in: int = 3600) -> Optional[str]:
     except Exception as e:
         logger.exception(f"Failed to generate presigned URL: {e}")
         return None
+
+
+def upload_pdf(
+    pdf_content: bytes,
+    paper_id: str,
+    source: str,
+    external_id: Optional[str] = None
+) -> Optional[dict]:
+    """
+    Upload a paper PDF to S3/R2.
+    
+    Args:
+        pdf_content: PDF file content as bytes
+        paper_id: UUID of the paper
+        source: Paper source (arxiv, pubmed, etc.)
+        external_id: External ID (arXiv ID, DOI, etc.)
+    
+    Returns:
+        Dict with {url, key, size_bytes} or None if upload failed
+    """
+    client = get_s3_client()
+    if not client:
+        logger.warning("S3 client not available. PDF not uploaded.")
+        return None
+    
+    try:
+        # Generate key path: pdfs/{source}/{paper_id}.pdf
+        # Using paper_id ensures uniqueness
+        safe_source = (source or "unknown").lower()[:20]
+        key = f"pdfs/{safe_source}/{paper_id}.pdf"
+        
+        # Upload with appropriate metadata
+        client.put_object(
+            Bucket=settings.s3_bucket,
+            Key=key,
+            Body=pdf_content,
+            ContentType="application/pdf",
+            CacheControl="public, max-age=31536000",  # 1 year cache (immutable)
+            Metadata={
+                "paper_id": str(paper_id),
+                "source": source or "",
+                "external_id": external_id or ""
+            }
+        )
+        
+        # Generate URL
+        if settings.s3_public_url:
+            # Custom public URL (e.g., CDN)
+            url = f"{settings.s3_public_url}/{key}"
+        elif settings.s3_endpoint:
+            # R2/MinIO custom endpoint
+            url = f"{settings.s3_endpoint}/{settings.s3_bucket}/{key}"
+        else:
+            # Standard S3
+            url = f"https://{settings.s3_bucket}.s3.amazonaws.com/{key}"
+        
+        logger.info(f"PDF uploaded to {key} ({len(pdf_content)} bytes)")
+        
+        return {
+            "url": url,
+            "key": key,
+            "size_bytes": len(pdf_content)
+        }
+        
+    except Exception as e:
+        logger.exception(f"Failed to upload PDF: {e}")
+        return None
+
+
+def get_pdf(key: str) -> Optional[bytes]:
+    """
+    Download a PDF from S3/R2.
+    
+    Args:
+        key: S3 object key
+    
+    Returns:
+        PDF content as bytes, or None if not found
+    """
+    client = get_s3_client()
+    if not client:
+        return None
+    
+    try:
+        response = client.get_object(Bucket=settings.s3_bucket, Key=key)
+        return response['Body'].read()
+    except client.exceptions.NoSuchKey:
+        logger.warning(f"PDF not found: {key}")
+        return None
+    except Exception as e:
+        logger.exception(f"Failed to get PDF: {e}")
+        return None
+
+
+def pdf_exists(key: str) -> bool:
+    """Check if a PDF exists in S3/R2."""
+    client = get_s3_client()
+    if not client:
+        return False
+    
+    try:
+        client.head_object(Bucket=settings.s3_bucket, Key=key)
+        return True
+    except:
+        return False
+

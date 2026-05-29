@@ -11,8 +11,9 @@ from app.database import get_db
 from app.models import User
 from app.schemas import (
     UserCreate, UserLogin, Token, UserResponse,
-    PasswordResetRequest, PasswordResetConfirm
+    PasswordResetRequest, PasswordResetConfirm, UserSettingsUpdate
 )
+from app.services.llm import get_available_models_for_user
 from app.auth import (
     hash_password, 
     verify_password, 
@@ -92,7 +93,13 @@ async def login(request: Request, credentials: UserLogin, db: Session = Depends(
         expires_delta=timedelta(minutes=settings.access_token_expire_minutes)
     )
     
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "user_id": str(user.id),
+        "tier": user.tier.value,
+        "name": user.name
+    }
 
 
 @router.get("/me", response_model=UserResponse)
@@ -103,17 +110,59 @@ def get_profile(current_user: User = Depends(get_current_user)):
 
 @router.put("/me", response_model=UserResponse)
 def update_profile(
-    name: str = None,
+    settings_update: UserSettingsUpdate,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Update current user's profile."""
-    if name:
-        current_user.name = name
+    """Update current user's profile and settings."""
+    if settings_update.name is not None:
+        current_user.name = settings_update.name
+    
+    if settings_update.preferred_llm_model is not None:
+        # Validate the model is available for the user's tier
+        available_models = get_available_models_for_user(current_user.tier.value)
+        available_model_ids = [m["id"] for m in available_models]
+        if settings_update.preferred_llm_model not in available_model_ids:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Model '{settings_update.preferred_llm_model}' is not available for your subscription tier"
+            )
+        current_user.preferred_llm_model = settings_update.preferred_llm_model
     
     db.commit()
     db.refresh(current_user)
     return current_user
+
+
+@router.get("/models")
+def get_available_models(current_user: User = Depends(get_current_user)):
+    """Get available LLM models for the current user's tier."""
+    models = get_available_models_for_user(current_user.tier.value)
+    return {
+        "models": models,
+        "current_model": current_user.preferred_llm_model or "openai/gpt-4o"
+    }
+
+
+@router.post("/refresh", response_model=Token)
+def refresh_token(current_user: User = Depends(get_current_user)):
+    """Refresh the access token for an authenticated user.
+    
+    This endpoint allows getting a fresh token when the current one is still valid.
+    Used by NextAuth to refresh backend tokens before they expire.
+    """
+    access_token = create_access_token(
+        data={"sub": str(current_user.id)},
+        expires_delta=timedelta(minutes=settings.access_token_expire_minutes)
+    )
+    
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "user_id": str(current_user.id),
+        "tier": current_user.tier.value,
+        "name": current_user.name
+    }
 
 
 @router.post("/password-reset/request")
@@ -240,7 +289,9 @@ async def oauth_sync(
     return {
         "access_token": access_token,
         "token_type": "bearer",
-        "user_id": str(user.id)
+        "user_id": str(user.id),
+        "tier": user.tier.value,
+        "name": user.name
     }
 
 

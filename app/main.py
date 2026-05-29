@@ -17,7 +17,7 @@ from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
 
 from app.config import get_settings
 from app.database import init_db
-from app.routers import auth, topics, review, newsletters, billing, subscriptions
+from app.routers import auth, topics, review, newsletters, billing, subscriptions, ai, living_reviews, papers, workflow
 
 
 settings = get_settings()
@@ -81,6 +81,10 @@ app.include_router(review.router)
 app.include_router(newsletters.router)
 app.include_router(billing.router)
 app.include_router(subscriptions.router)
+app.include_router(ai.router)
+app.include_router(living_reviews.router)
+app.include_router(papers.router)
+app.include_router(workflow.router)
 
 
 @app.get("/")

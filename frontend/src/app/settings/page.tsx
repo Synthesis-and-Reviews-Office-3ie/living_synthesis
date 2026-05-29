@@ -1,23 +1,39 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
 import { authApi } from "@/lib/api";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Check, Crown } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Loader2, Check, Crown, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
 export default function SettingsPage() {
   const { user, refreshUser } = useAuth();
   const [name, setName] = useState(user?.name || "");
   const [email, setEmail] = useState(user?.email || "");
+  const [selectedModel, setSelectedModel] = useState(user?.preferred_llm_model || "openai/gpt-4o");
+
+  // Fetch available models for user's tier
+  const { data: modelsData, isLoading: modelsLoading } = useQuery({
+    queryKey: ["available-models"],
+    queryFn: () => authApi.getAvailableModels(),
+    enabled: !!user,
+  });
+
+  // Update selectedModel when modelsData loads
+  useEffect(() => {
+    if (modelsData?.current_model) {
+      setSelectedModel(modelsData.current_model);
+    }
+  }, [modelsData]);
 
   const updateMutation = useMutation({
     mutationFn: () => authApi.updateProfile({ name, email }),
@@ -27,6 +43,17 @@ export default function SettingsPage() {
     },
     onError: (error: any) => {
       toast.error(error.response?.data?.detail || "Failed to update profile");
+    },
+  });
+
+  const updateModelMutation = useMutation({
+    mutationFn: (model: string) => authApi.updateProfile({ preferred_llm_model: model }),
+    onSuccess: () => {
+      refreshUser();
+      toast.success("AI model preference updated");
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.detail || "Failed to update model preference");
     },
   });
 
@@ -97,6 +124,72 @@ export default function SettingsPage() {
               Save Changes
             </Button>
           </form>
+        </CardContent>
+      </Card>
+
+      {/* AI Model Selection */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Sparkles className="h-5 w-5" />
+            AI Model
+          </CardTitle>
+          <CardDescription>
+            Choose the AI model for generating your newsletters
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {modelsLoading ? (
+            <div className="flex items-center gap-2">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              <span>Loading available models...</span>
+            </div>
+          ) : (
+            <>
+              <div className="space-y-2">
+                <Label htmlFor="model">Preferred Model</Label>
+                <Select
+                  value={selectedModel}
+                  onValueChange={(value) => {
+                    setSelectedModel(value);
+                    updateModelMutation.mutate(value);
+                  }}
+                  disabled={updateModelMutation.isPending}
+                >
+                  <SelectTrigger id="model" className="w-full">
+                    <SelectValue placeholder="Select a model" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {modelsData?.models?.map((model: { id: string; name: string; description: string; tier: string }) => (
+                      <SelectItem key={model.id} value={model.id}>
+                        <div className="flex items-center gap-2">
+                          <span>{model.name}</span>
+                          {model.tier !== "free" && (
+                            <Badge variant="secondary" className="text-xs">
+                              {model.tier.toUpperCase()}
+                            </Badge>
+                          )}
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              {modelsData?.models?.find((m: any) => m.id === selectedModel)?.description && (
+                <p className="text-sm text-muted-foreground">
+                  {modelsData.models.find((m: any) => m.id === selectedModel)?.description}
+                </p>
+              )}
+              {user?.tier === "free" && (
+                <div className="flex items-center gap-2 p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800">
+                  <Crown className="h-4 w-4 text-amber-600" />
+                  <p className="text-sm text-amber-800 dark:text-amber-200">
+                    Upgrade to Pro for access to advanced models including Perplexity for research-focused summaries.
+                  </p>
+                </div>
+              )}
+            </>
+          )}
         </CardContent>
       </Card>
 

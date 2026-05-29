@@ -110,3 +110,14 @@ Thumbs.db
 # Local development
 local_settings.py
 docker-compose.override.yml
+
+# OneDrive
+desktop.ini
+**/desktop.ini
+.deepeval/
+.mypy_cache/
+.pytest_cache/
+__pycache__/
+.Rhistory
+dev.db
+

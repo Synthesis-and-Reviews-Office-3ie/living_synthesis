@@ -27,8 +27,26 @@ class Settings(BaseSettings):
     jwt_algorithm: str = "HS256"
     access_token_expire_minutes: int = 60 * 24 * 7  # 1 week
     
-    # API Keys
+    # LLM Providers - Users can choose their preferred model
+    # OpenRouter (unified access to multiple models)
+    openrouter_api_key: Optional[str] = None
+    
+    # OpenAI Direct
     openai_api_key: Optional[str] = None
+    
+    # Anthropic
+    anthropic_api_key: Optional[str] = None
+    
+    # Google Gemini
+    google_ai_api_key: Optional[str] = None
+    
+    # Perplexity (Pro feature - research-focused)
+    perplexity_api_key: Optional[str] = None
+    
+    # Default model for new users
+    default_llm_model: str = "gpt-4o"
+    
+    # Legacy support (maps to openrouter)
     openai_base_url: Optional[str] = "https://openrouter.ai/api/v1"
     openai_model: str = "openai/gpt-4o"
     

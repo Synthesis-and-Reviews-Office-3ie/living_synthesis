@@ -12,6 +12,7 @@ import {
   Menu,
   X,
   Sparkles,
+  BookOpen,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -29,6 +30,7 @@ import { useState } from "react";
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/topics", label: "Topics", icon: FileText },
+  { href: "/reviews", label: "Living Reviews", icon: BookOpen },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 

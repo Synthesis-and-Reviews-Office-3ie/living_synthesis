@@ -2,18 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Loader2, Mail } from "lucide-react";
 import { toast } from "sonner";
-import {
-  signInWithGoogle,
-  signInWithMicrosoft,
-  signInWithGitHub,
-  signInWithCredentials,
-} from "@/lib/auth-actions";
 
 // OAuth provider icons
 function GoogleIcon({ className }: { className?: string }) {
@@ -52,14 +47,31 @@ export function LoginForm() {
   const [loading, setLoading] = useState(false);
   const [oauthLoading, setOauthLoading] = useState<string | null>(null);
 
+  const handleOAuthSignIn = (provider: string) => {
+    setOauthLoading(provider);
+    // Use next-auth/react signIn which handles the redirect properly
+    signIn(provider, { callbackUrl: "/dashboard" });
+  };
+
   const handleCredentialsSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      await signInWithCredentials(email, password);
-    } catch (error: any) {
-      toast.error(error.message || "Invalid credentials");
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        toast.error("Invalid credentials");
+        setLoading(false);
+      } else if (result?.ok) {
+        window.location.href = "/dashboard";
+      }
+    } catch {
+      toast.error("Something went wrong");
       setLoading(false);
     }
   };
@@ -68,54 +80,48 @@ export function LoginForm() {
     <div className="space-y-4">
       {/* OAuth Buttons */}
       <div className="grid gap-2">
-        <form action={signInWithGoogle}>
-          <Button
-            type="submit"
-            variant="outline"
-            className="w-full"
-            disabled={!!oauthLoading}
-            onClick={() => setOauthLoading("google")}
-          >
-            {oauthLoading === "google" ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <GoogleIcon className="mr-2 h-4 w-4" />
-            )}
-            Continue with Google
-          </Button>
-        </form>
-        <form action={signInWithMicrosoft}>
-          <Button
-            type="submit"
-            variant="outline"
-            className="w-full"
-            disabled={!!oauthLoading}
-            onClick={() => setOauthLoading("microsoft")}
-          >
-            {oauthLoading === "microsoft" ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <MicrosoftIcon className="mr-2 h-4 w-4" />
-            )}
-            Continue with Microsoft
-          </Button>
-        </form>
-        <form action={signInWithGitHub}>
-          <Button
-            type="submit"
-            variant="outline"
-            className="w-full"
-            disabled={!!oauthLoading}
-            onClick={() => setOauthLoading("github")}
-          >
-            {oauthLoading === "github" ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <GitHubIcon className="mr-2 h-4 w-4" />
-            )}
-            Continue with GitHub
-          </Button>
-        </form>
+        <Button
+          type="button"
+          variant="outline"
+          className="w-full"
+          disabled={!!oauthLoading}
+          onClick={() => handleOAuthSignIn("google")}
+        >
+          {oauthLoading === "google" ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            <GoogleIcon className="mr-2 h-4 w-4" />
+          )}
+          Continue with Google
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          className="w-full"
+          disabled={!!oauthLoading}
+          onClick={() => handleOAuthSignIn("microsoft-entra-id")}
+        >
+          {oauthLoading === "microsoft-entra-id" ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            <MicrosoftIcon className="mr-2 h-4 w-4" />
+          )}
+          Continue with Microsoft
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          className="w-full"
+          disabled={!!oauthLoading}
+          onClick={() => handleOAuthSignIn("github")}
+        >
+          {oauthLoading === "github" ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            <GitHubIcon className="mr-2 h-4 w-4" />
+          )}
+          Continue with GitHub
+        </Button>
       </div>
 
       <div className="relative">

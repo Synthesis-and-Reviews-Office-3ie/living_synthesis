@@ -72,27 +72,20 @@ export default function TopicsPage() {
             Manage your research topics and newsletters
           </p>
         </div>
-        <Button disabled={!canCreateTopic} asChild>
-          <Link href="/topics/new">
-            <Plus className="mr-2 h-4 w-4" />
-            New Topic
-          </Link>
+        <Button disabled={!canCreateTopic} asChild={canCreateTopic}>
+          {canCreateTopic ? (
+            <Link href="/topics/new">
+              <Plus className="mr-2 h-4 w-4" />
+              New Topic
+            </Link>
+          ) : (
+            <span onClick={() => toast.error(`You've reached your topic limit (${limit}). Upgrade your plan to create more.`)}>
+              <Plus className="mr-2 h-4 w-4" />
+              New Topic
+            </span>
+          )}
         </Button>
       </div>
-
-      {!canCreateTopic && (
-        <Card className="border-amber-200 bg-amber-50">
-          <CardContent className="py-4">
-            <p className="text-sm text-amber-800">
-              You&apos;ve reached your topic limit ({limit} topics).{" "}
-              <Link href="/settings" className="font-medium underline">
-                Upgrade your plan
-              </Link>{" "}
-              to create more.
-            </p>
-          </CardContent>
-        </Card>
-      )}
 
       {isLoading ? (
         <div className="grid gap-4 md:grid-cols-2">
