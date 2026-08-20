@@ -10,6 +10,85 @@ The problem is sharper in fast-moving methodological areas. My own case was the 
 
 I built two things in response. The first is a pipeline that runs a standing search and drafts a weekly digest. The second is a web application that turns the same machinery into shared infrastructure for a review team, with screening, assignment and conflict resolution built in.
 
+## How the pieces fit together
+
+Both products draw on one ingestion layer. Rectangles are sets of records; hexagons are processes.
+
+```mermaid
+flowchart TB
+    BIB["Bibliographic sources<br/>OpenAlex · PubMed · Crossref · arXiv"]
+    GREY["Grey literature<br/>Google Search · GitHub · RSS"]
+
+    FETCH{{"Ingestion<br/>scheduled per topic"}}
+    DEDUP{{"Deduplication<br/>merge on DOI"}}
+    OA{{"Unpaywall enrichment<br/>resolve open-access copy"}}
+    POOL["Record pool"]
+
+    BIB --> FETCH
+    GREY --> FETCH
+    FETCH --> DEDUP --> OA --> POOL
+
+    AIA{{"LLM analysis<br/>relevance · category · summary"}}
+    DRAFT["Weekly draft"]
+    HUM1{{"My review<br/>cut noise, correct summaries"}}
+    OUT1["Newsletter<br/>Markdown + HTML"]
+
+    POOL --> AIA --> DRAFT --> HUM1 --> OUT1
+
+    QUEUE["Screening queue<br/>one per living review"]
+    SCREEN{{"Screening workflow<br/>see below"}}
+    INC["Included studies"]
+    VER["Versioned review update"]
+    DEX{{"Data extraction<br/>not yet built"}}
+
+    POOL --> QUEUE --> SCREEN --> INC
+    INC --> VER
+    INC -.-> DEX
+
+    classDef rec fill:#dbeafe,stroke:#1e3a8a,color:#0f172a
+    classDef proc fill:#fde68a,stroke:#92400e,color:#0f172a
+    classDef todo fill:#f1f5f9,stroke:#94a3b8,color:#475569,stroke-dasharray:4 3
+    class BIB,GREY,POOL,DRAFT,OUT1,QUEUE,INC,VER rec
+    class FETCH,DEDUP,OA,AIA,HUM1,SCREEN proc
+    class DEX todo
+```
+
+The screening workflow, expanded:
+
+```mermaid
+flowchart TB
+    Q["Screening queue"]
+    AIS{{"AI screening<br/>against PICO"}}
+    AIR["AI decision<br/>confidence + rationale"]
+    ASSIGN{{"Assignment<br/>balanced across team"}}
+    R1{{"Reviewer 1"}}
+    R2{{"Reviewer 2<br/>dual modes only"}}
+    DEC["Screening record"]
+    CONF{"Agreement?"}
+    CQ["Conflict queue<br/>human–human · human–LLM · uncertain"]
+    RES{{"Resolution<br/>third reviewer or admin"}}
+    FINAL["Final decision"]
+    INC["Included"]
+    EXC["Excluded"]
+    MET["Metrics<br/>Cohen's κ · AI precision / recall / F1"]
+
+    Q --> AIS --> AIR --> DEC
+    Q --> ASSIGN
+    ASSIGN --> R1 --> DEC
+    ASSIGN --> R2 --> DEC
+    DEC --> CONF
+    CONF -->|agree| FINAL
+    CONF -->|disagree| CQ --> RES --> FINAL
+    FINAL --> INC
+    FINAL --> EXC
+    FINAL --> MET
+
+    classDef rec fill:#dbeafe,stroke:#1e3a8a,color:#0f172a
+    classDef proc fill:#fde68a,stroke:#92400e,color:#0f172a
+    class Q,AIR,DEC,CQ,FINAL,INC,EXC,MET rec
+    class AIS,ASSIGN,R1,R2,RES proc
+```
+
 ## What the search covers
 
 The pipeline queries PubMed, OpenAlex, Crossref and arXiv for the bibliographic record, and supplements these with Google Custom Search for blogs and news, GitHub for tool releases, and a set of RSS feeds. Records are merged on DOI where one exists, and open-access copies are resolved through Unpaywall so that a link to the full text is available at the point of screening rather than two clicks later.
