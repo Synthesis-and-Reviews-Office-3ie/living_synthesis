@@ -12,7 +12,7 @@ I built two things in response. The first is a pipeline that runs a standing sea
 
 ## How the pieces fit together
 
-Both products draw on one ingestion layer. Rectangles are sets of records; hexagons are processes.
+Both products draw on one ingestion layer. Shape carries *what* a node is — rectangles are sets of records, hexagons are processes. Colour carries *who produced it*: purple for the model's own unchecked output, amber for a step a person performs, blue for a record a person has checked or that arrived from a source. Dashed means not yet built.
 
 ```mermaid
 flowchart TB
@@ -29,7 +29,7 @@ flowchart TB
     FETCH --> DEDUP --> OA --> POOL
 
     AIA{{"LLM analysis<br/>relevance · category · summary"}}
-    DRAFT["Weekly draft"]
+    DRAFT["Weekly draft<br/>model output, unchecked"]
     HUM1{{"My review<br/>cut noise, correct summaries"}}
     OUT1["Newsletter<br/>Markdown + HTML"]
 
@@ -47,9 +47,11 @@ flowchart TB
 
     classDef rec fill:#dbeafe,stroke:#1e3a8a,color:#0f172a
     classDef proc fill:#fde68a,stroke:#92400e,color:#0f172a
+    classDef ai fill:#ede9fe,stroke:#5b21b6,color:#0f172a
     classDef todo fill:#f1f5f9,stroke:#94a3b8,color:#475569,stroke-dasharray:4 3
-    class BIB,GREY,POOL,DRAFT,OUT1,QUEUE,INC,VER rec
-    class FETCH,DEDUP,OA,AIA,HUM1,SCREEN proc
+    class BIB,GREY,POOL,OUT1,QUEUE,INC,VER rec
+    class FETCH,DEDUP,OA,HUM1,SCREEN proc
+    class AIA,DRAFT ai
     class DEX todo
 ```
 
@@ -63,8 +65,8 @@ flowchart TB
     ASSIGN{{"Assignment<br/>balanced across team"}}
     R1{{"Reviewer 1"}}
     R2{{"Reviewer 2<br/>dual modes only"}}
-    DEC["Screening record"]
-    CONF{"Agreement?"}
+    DEC["Screening record<br/>every rater's decision"]
+    CONF{"Decisions agree?"}
     CQ["Conflict queue<br/>human–human · human–LLM · uncertain"]
     RES{{"Resolution<br/>third reviewer or admin"}}
     FINAL["Final decision"]
@@ -72,21 +74,26 @@ flowchart TB
     EXC["Excluded"]
     MET["Metrics<br/>Cohen's κ · AI precision / recall / F1"]
 
-    Q --> AIS --> AIR --> DEC
+    Q --> AIS --> AIR
+    AIR -->|"advisory · never decisive"| DEC
     Q --> ASSIGN
     ASSIGN --> R1 --> DEC
     ASSIGN --> R2 --> DEC
     DEC --> CONF
-    CONF -->|agree| FINAL
+    CONF -->|"agree · or single-reviewer mode"| FINAL
     CONF -->|disagree| CQ --> RES --> FINAL
     FINAL --> INC
     FINAL --> EXC
-    FINAL --> MET
+    DEC --> MET
 
     classDef rec fill:#dbeafe,stroke:#1e3a8a,color:#0f172a
     classDef proc fill:#fde68a,stroke:#92400e,color:#0f172a
-    class Q,AIR,DEC,CQ,FINAL,INC,EXC,MET rec
-    class AIS,ASSIGN,R1,R2,RES proc
+    classDef ai fill:#ede9fe,stroke:#5b21b6,color:#0f172a
+    classDef gate fill:#e2e8f0,stroke:#475569,color:#0f172a
+    class Q,DEC,CQ,FINAL,INC,EXC,MET rec
+    class ASSIGN,R1,R2,RES proc
+    class AIS,AIR ai
+    class CONF gate
 ```
 
 ## What the search covers
