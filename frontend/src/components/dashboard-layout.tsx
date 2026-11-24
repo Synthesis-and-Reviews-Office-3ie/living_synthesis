@@ -74,7 +74,7 @@ function UserMenu() {
         .map((n) => n[0])
         .join("")
         .toUpperCase()
-    : user.email[0].toUpperCase();
+    : (user.email ?? "?")[0].toUpperCase();
 
   return (
     <DropdownMenu>

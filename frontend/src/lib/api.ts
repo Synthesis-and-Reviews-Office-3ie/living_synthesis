@@ -126,10 +126,6 @@ export const topicsApi = {
   getFilteredReviewQueue: (topicId: string, minRelevance: number = 0, hideLowRelevance: boolean = false) =>
     api.get(`/topics/${topicId}/review-filtered`, { params: { min_relevance: minRelevance, hide_low_relevance: hideLowRelevance } }),
 
-  // Single paper include/exclude
-  reviewPaper: (topicId: string, paperId: string, included: boolean) =>
-    api.post(`/topics/${topicId}/papers/${paperId}/review`, { included }),
-
   submitReview: (id: string, decisions: Array<{
     paper_id: string;
     include: boolean;
@@ -198,6 +194,8 @@ export interface Topic {
   living_review_type?: string;
   living_review_source?: string;
   living_review_last_sync?: string;
+  // Displayed by the review pages; the API does not currently return it (renders as 0).
+  papers_count?: number;
 }
 
 export interface Paper {

@@ -21,7 +21,9 @@ const providers: Provider[] = [
   MicrosoftEntraID({
     clientId: process.env.MICROSOFT_CLIENT_ID!,
     clientSecret: process.env.MICROSOFT_CLIENT_SECRET!,
-    tenantId: "common", // allows personal & work accounts
+    // "common" tenant allows personal & work accounts; issuer is the supported
+    // way to set the tenant in this next-auth version (tenantId is not in its types).
+    issuer: "https://login.microsoftonline.com/common/v2.0",
   }),
   GitHub({
     clientId: process.env.GITHUB_CLIENT_ID!,
